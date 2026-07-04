@@ -60,74 +60,6 @@
         .cat-row { 
             display: flex; 
             gap: 12px; 
-            padding: 16px**✅ به‌روزرسانی شد!**
-
-
-### فایل `index.html` نهایی (کامل):
-
-```html
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مایرا</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #f8f5f1;
-            --card: #ffffff;
-            --text: #333;
-            --accent: #4a2c1f;
-        }
-        
-        [data-theme="dark"] {
-            --bg: #1a1a1a;
-            --card: #2a2a2a;
-            --text: #e5e5e5;
-            --accent: #e5b567;
-        }
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Vazirmatn', system-ui, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            direction: rtl;
-            max-width: 430px;
-            margin: 0 auto;
-            min-height: 100vh;
-        }
-        
-        .topbar {
-            background: var(--card);
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .logo { font-weight: 800; font-size: 22px; color: var(--accent); }
-        .search-bar { 
-            flex: 1; 
-            margin: 0 12px; 
-            background: #e5d9c8; 
-            border-radius: 30px; 
-            padding: 10px 20px; 
-            font-size: 14px; 
-            border: none; 
-            outline: none; 
-        }
-        [data-theme="dark"] .search-bar { background: #3a3a3a; color: white; }
-        
-        .cat-row { 
-            display: flex; 
-            gap: 12px; 
             padding: 16px 12px; 
             overflow-x: auto; 
             background: var(--card); 
@@ -151,11 +83,17 @@
         .cat-circle.active { transform: scale(1.15); box-shadow: 0 8px 20px rgba(255,107,157,0.3); }
         
         .menu-items { padding: 20px 16px 40px; }
+        
         .item-card { 
-            background: var(--card); border-radius: 18px; padding: 12px; 
-            margin-bottom: 14px; display: flex; gap: 14px; 
+            background: var(--card); 
+            border-radius: 18px; 
+            padding: 12px; 
+            margin-bottom: 14px; 
+            display: flex; 
+            gap: 14px; 
             box-shadow: 0 4px 15px rgba(0,0,0,0.08); 
         }
+        
         .item-img { width: 85px; height: 85px; border-radius: 14px; object-fit: cover; }
         .price { color: #e63946; font-weight: 800; font-size: 16px; margin-top: 10px; }
         
@@ -319,7 +257,7 @@
 
         function shareTo(platform) {
             const url = window.location.href;
-            const text = "منوی کافه رو ببین! 🍩";
+            const text = "منوی کافه  رو ببین! 🍩";
 
             switch(platform) {
                 case 'whatsapp':
@@ -329,18 +267,15 @@
                     window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank');
                     break;
                 case 'instagram':
-                    alert("لینک کپی شد. می‌تونی در اینستاگرام استوری یا پست بذاری.");
                     navigator.clipboard.writeText(url);
+                    alert("لینک کپی شد. می‌تونی در اینستاگرام استفاده کنی.");
                     break;
                 case 'copy':
-                    navigator.clipboard.writeText(url).then(() => {
-                        alert("لینک منو کپی شد ✓");
-                    });
+                    navigator.clipboard.writeText(url).then(() => alert("لینک منو کپی شد ✓"));
                     break;
             }
         }
 
-        // بقیه کد (دسته‌بندی، جستجو، لود منو)
         async function loadMenu() {
             try {
                 const res = await fetch('menu-data.json?t=' + Date.now());
@@ -393,7 +328,7 @@
                 const priceHTML = (item.price && item.price !== "-") ? `<div class="price">${item.price} تومان</div>` : '';
                 html += `
                     <div class="item-card">
-                        <img src="$$   {item.image || 'https://via.placeholder.com/85'}" class="item-img" alt="   $${item.name}">
+                        <img src="${item.image || 'https://via.placeholder.com/85'}" class="item-img" alt="${item.name}">
                         <div style="flex:1;">
                             <h4 style="font-size:15.5px;margin-bottom:6px;">${item.name}</h4>
                             <p style="font-size:13px;color:#888;">${item.category}</p>
@@ -407,9 +342,7 @@
         document.getElementById('searchInput').addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase().trim();
             let filtered = currentCategory ? menuData.filter(i => i.category === currentCategory) : menuData;
-            if (term) {
-                filtered = filtered.filter(i => i.name.toLowerCase().includes(term) || i.category.toLowerCase().includes(term));
-            }
+            if (term) filtered = filtered.filter(i => i.name.toLowerCase().includes(term) || i.category.toLowerCase().includes(term));
             renderMenuItems(filtered);
         });
 
