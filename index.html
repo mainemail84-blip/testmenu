@@ -11,7 +11,6 @@
             --bg: #f8f5f1;
             --accent: #4a2c1f;
             --pink: #ff6b9d;
-            --orange: #ff9f1c;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -20,11 +19,9 @@
             background: var(--bg);
             color: #333;
             direction: rtl;
-            text-align: right;
             max-width: 430px;
             margin: 0 auto;
             min-height: 100vh;
-            overflow-x: hidden;
         }
         
         .topbar {
@@ -39,17 +36,7 @@
             z-index: 100;
         }
         
-        .topbar-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .logo {
-            font-weight: 800;
-            font-size: 22px;
-            color: var(--accent);
-        }
+        .logo { font-weight: 800; font-size: 22px; color: var(--accent); }
         
         .search-bar {
             flex: 1;
@@ -80,8 +67,7 @@
         }
         
         .cat-circle {
-            width: 58px;
-            height: 58px;
+            width: 58px; height: 58px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -89,29 +75,17 @@
             font-size: 28px;
             margin-bottom: 6px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            transition: all 0.3s;
         }
         
-        .cat-circle.active {
-            transform: scale(1.15);
-            box-shadow: 0 8px 20px rgba(255, 107, 157, 0.3);
-        }
-        
-        .cat-name {
-            font-size: 12px;
-            font-weight: 600;
-            color: #555;
-        }
+        .cat-circle.active { transform: scale(1.15); box-shadow: 0 8px 20px rgba(255,107,157,0.3); }
         
         .main-donut {
             text-align: center;
-            margin: 10px 0 20px;
-            position: relative;
+            margin: 20px 0;
         }
         
         .donut-circle {
-            width: 110px;
-            height: 110px;
+            width: 110px; height: 110px;
             background: linear-gradient(145deg, #ff9f1c, #ff6b9d);
             border-radius: 50%;
             margin: 0 auto;
@@ -119,30 +93,14 @@
             align-items: center;
             justify-content: center;
             font-size: 52px;
-            box-shadow: 0 10px 30px rgba(255, 107, 157, 0.4);
-            position: relative;
-        }
-        
-        .price-tag {
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: white;
-            color: #e63946;
-            padding: 4px 18px;
-            border-radius: 30px;
-            font-size: 13px;
-            font-weight: 700;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            white-space: nowrap;
+            box-shadow: 0 10px 30px rgba(255,107,157,0.4);
         }
         
         .offers {
             display: flex;
             gap: 14px;
             padding: 0 16px;
-            margin-bottom: 24px;
+            margin: 10px 0 24px;
         }
         
         .offer-card {
@@ -150,29 +108,6 @@
             border-radius: 22px;
             padding: 16px;
             box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .offer-card.blue {
-            background: linear-gradient(135deg, #a8dadc, #457b9d);
-            color: white;
-        }
-        
-        .offer-card.peach {
-            background: linear-gradient(135deg, #ffe5d9, #ff9f6c);
-        }
-        
-        .discount-badge {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            background: rgba(255,255,255,0.95);
-            color: #e63946;
-            font-size: 11px;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-weight: 700;
         }
         
         .daily-suggestion {
@@ -181,147 +116,169 @@
             color: white;
             border-radius: 22px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
         }
         
         .daily-suggestion img {
             width: 100%;
-            height: 180px;
+            height: 190px;
             object-fit: cover;
         }
         
-        .daily-content {
-            padding: 16px;
+        .menu-items {
+            padding: 0 16px 30px;
         }
         
-        .daily-header {
+        .item-card {
+            background: white;
+            border-radius: 18px;
+            padding: 12px;
+            margin-bottom: 14px;
             display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
+            gap: 14px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
         }
         
-        .star {
-            color: #ffd93d;
+        .item-img {
+            width: 85px;
+            height: 85px;
+            border-radius: 14px;
+            object-fit: cover;
+            background: #eee;
+        }
+        
+        .item-info h4 {
+            margin: 0 0 6px;
+            font-size: 15px;
         }
         
         .price {
-            font-size: 22px;
+            color: #e63946;
             font-weight: 800;
-            margin: 12px 0;
-        }
-        
-        .btn {
-            background: #fff;
-            color: #333;
-            border: none;
-            padding: 10px 24px;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 14px;
-            width: fit-content;
+            font-size: 16px;
         }
         
         .footer {
             text-align: center;
-            padding: 20px 0;
-            font-size: 13px;
+            padding: 20px;
             color: #777;
-            background: white;
+            font-size: 13px;
         }
     </style>
 </head>
 <body>
     <!-- Top Bar -->
     <div class="topbar">
-        <div class="topbar-left">
-            <i class="fas fa-shopping-cart" style="font-size: 22px; color: #555;"></i>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <i class="fas fa-shopping-cart" style="font-size:22px;"></i>
             <div class="logo">مایرا</div>
         </div>
-        <input type="text" class="search-bar" placeholder="برای جستجو، نام محصول را بنویسید...">
-        <div style="display: flex; gap: 8px;">
-            <i class="fas fa-redo" style="font-size: 20px; color: #555;"></i>
-            <i class="fas fa-bars" style="font-size: 22px; color: #555;"></i>
-        </div>
+        <input type="text" id="searchInput" class="search-bar" placeholder="جستجو در منو...">
+        <i class="fas fa-bars" style="font-size:22px;"></i>
     </div>
 
     <!-- Categories -->
-    <div class="cat-row">
-        <div class="cat-item">
-            <div class="cat-circle" style="background: #f4a261;">🍕</div>
-            <div class="cat-name">پیتزا</div>
-        </div>
-        <div class="cat-item">
-            <div class="cat-circle" style="background: #6b705c;">🥤</div>
-            <div class="cat-name">بار سرد</div>
-        </div>
-        <div class="cat-item active">
-            <div class="cat-circle" style="background: linear-gradient(145deg, #ff9f1c, #ff6b9d);">🍩</div>
-            <div class="cat-name">دونات</div>
-        </div>
-        <div class="cat-item">
-            <div class="cat-circle" style="background: #e76f51;">☕</div>
-            <div class="cat-name">بار گرم</div>
-        </div>
-        <div class="cat-item">
-            <div class="cat-circle" style="background: #a8dadc;">🍰</div>
-            <div class="cat-name">کیک و دسر</div>
-        </div>
-    </div>
+    <div class="cat-row" id="catRow"></div>
 
     <!-- Main Donut -->
     <div class="main-donut">
         <div class="donut-circle">🍩</div>
-        <div class="price-tag">۲۹۰,۰۰۰ تومان</div>
     </div>
 
-    <!-- Offers -->
-    <div class="offers">
-        <!-- Breakfast Offer -->
-        <div class="offer-card blue">
-            <div class="discount-badge">۵٪ تخفیف</div>
-            <div style="margin-top: 40px; font-weight: 700; font-size: 15px;">صبحانه با ۵٪ تخفیف</div>
-            <button class="btn" style="margin-top: 12px;">مشاهده</button>
-        </div>
-        
-        <!-- Appetizer Offer -->
-        <div class="offer-card peach">
-            <div class="discount-badge">۲۰٪ تخفیف</div>
-            <div style="margin-top: 40px; font-weight: 700; font-size: 15px;">پیش غذا با ۲۰٪ تخفیف</div>
-            <button class="btn" style="margin-top: 12px;">مشاهده</button>
-        </div>
-    </div>
 
     <!-- Daily Suggestion -->
     <div class="daily-suggestion">
-        <img src="https://picsum.photos/id/1080/400/220" alt="چیزکیک" style="width:100%; height:190px; object-fit:cover;">
-        <div class="daily-content">
-            <div class="daily-header">
-                <span>⭐ ۴.۹</span>
-                <span style="color: #ffd93d;">(۱۳۷ نظر)</span>
-            </div>
-            <div style="font-size: 17px; font-weight: 700; margin: 6px 0;">چیزکیک شاه توت</div>
-            <div style="font-size: 13px; color: #ddd; margin-bottom: 14px;">جذاب ترین شاه توت، خامه و بیسکویت</div>
-            
-            <div style="display: flex; justify-content: space-between; align-items: center;">
+        <img src="https://picsum.photos/id/1080/400/220" alt="چیزکیک">
+        <div style="padding:16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <span style="color:#ffd93d;">⭐ ۴.۹</span>
+                    <span style="font-size:13px;">(۱۳۷ نظر)</span>
+                </div>
                 <div class="price">۱۴۶,۰۰۰ تومان</div>
-                <button class="btn" style="background: #ff6b9d; color: white;">جزئیات بیشتر</button>
             </div>
+            <h3 style="margin:8px 0;">چیزکیک شاه توت</h3>
+            <button onclick="alert('جزئیات بیشتر')" style="background:#ff6b9d; color:white; border:none; padding:10px 24px; border-radius:30px; font-weight:700;">جزئیات بیشتر</button>
         </div>
     </div>
 
-    <div class="footer">
-        شگفت‌انگیزهای امروز
+    <!-- Menu Items -->
+    <div class="menu-items">
+        <h3 style="margin:0 0 16px 16px; font-size:17px;">تمام آیتم‌ها</h3>
+        <div id="menuContainer"></div>
     </div>
 
     <script>
-        // Simple interactivity
-        document.querySelectorAll('.cat-item').forEach(item => {
-            item.addEventListener('click', () => {
-                document.querySelectorAll('.cat-item').forEach(i => i.classList.remove('active'));
-                item.classList.add('active');
+        let menuData = [];
+
+        async function loadMenu() {
+            try {
+                const res = await fetch('menu-data.json');
+                menuData = await res.json();
+                renderCategories();
+                renderAllItems();
+            } catch(e) {
+                console.error("خطا در لود منو", e);
+                document.getElementById('menuContainer').innerHTML = "<p style='text-align:center; padding:40px; color:#999;'>خطا در لود اطلاعات</p>";
+            }
+        }
+
+        function renderCategories() {
+            const cats = [...new Set(menuData.map(item => item.category))];
+            let html = '';
+            
+            cats.forEach((cat, index) => {
+                const emoji = getEmoji(cat);
+                html += `
+                    <div class="cat-item ${index===2 ? 'active' : ''}">
+                        <div class="cat-circle" style="background: ${index===2 ? 'linear-gradient(145deg, #ff9f1c, #ff6b9d)' : '#ddd'};">${emoji}</div>
+                        <div style="font-size:12px; font-weight:600;">${cat}</div>
+                    </div>`;
             });
+            
+            document.getElementById('catRow').innerHTML = html;
+        }
+
+        function getEmoji(cat) {
+            if (cat.includes('قهوه') || cat.includes('چای')) return '☕';
+            if (cat.includes('سرد')) return '🥤';
+            if (cat.includes('پیتزا')) return '🍕';
+            if (cat.includes('دسر') || cat.includes('کیک')) return '🍰';
+            return '🍔';
+        }
+
+        function renderAllItems(filtered = menuData) {
+            let html = '';
+            filtered.forEach(item => {
+                const price = item.price !== '-' ? `${item.price} تومان` : 'تماس بگیرید';
+                html += `
+                    <div class="item-card">
+                        <img src="${item.image}" class="item-img" alt="${item.name}">
+                        <div class="item-info" style="flex:1;">
+                            <h4>${item.name}</h4>
+                            <p style="font-size:13px; color:#666; margin:4px 0;">${item.desc || item.category}</p>
+                            <div style="color:#e63946; font-weight:700; margin-top:8px;">${price}</div>
+                        </div>
+                    </div>`;
+            });
+            document.getElementById('menuContainer').innerHTML = html;
+        }
+
+        // Search
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const term = e.target.value.trim();
+            if (!term) {
+                renderAllItems();
+                return;
+            }
+            const filtered = menuData.filter(item => 
+                item.name.includes(term) || 
+                (item.desc && item.desc.includes(term))
+            );
+            renderAllItems(filtered);
         });
+
+        // Load data
+        window.onload = loadMenu;
     </script>
 </body>
 </html>
