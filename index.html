@@ -60,6 +60,75 @@
         .cat-row { 
             display: flex; 
             gap: 12px; 
+            padding: 16px**✅ به‌روزرسانی شد!**
+
+حالا وقتی روی دکمه **"اشتراک‌گذاری منو"** کلیک می‌کنی، یک لیست از پلتفرم‌ها (واتساپ، تلگرام، اینستاگرام، ایکس، و کپی لینک) نمایش داده می‌شود.
+
+### فایل `index.html` نهایی (کامل):
+
+```html
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مایرا</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8f5f1;
+            --card: #ffffff;
+            --text: #333;
+            --accent: #4a2c1f;
+        }
+        
+        [data-theme="dark"] {
+            --bg: #1a1a1a;
+            --card: #2a2a2a;
+            --text: #e5e5e5;
+            --accent: #e5b567;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Vazirmatn', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            direction: rtl;
+            max-width: 430px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+        
+        .topbar {
+            background: var(--card);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo { font-weight: 800; font-size: 22px; color: var(--accent); }
+        .search-bar { 
+            flex: 1; 
+            margin: 0 12px; 
+            background: #e5d9c8; 
+            border-radius: 30px; 
+            padding: 10px 20px; 
+            font-size: 14px; 
+            border: none; 
+            outline: none; 
+        }
+        [data-theme="dark"] .search-bar { background: #3a3a3a; color: white; }
+        
+        .cat-row { 
+            display: flex; 
+            gap: 12px; 
             padding: 16px 12px; 
             overflow-x: auto; 
             background: var(--card); 
@@ -83,25 +152,18 @@
         .cat-circle.active { transform: scale(1.15); box-shadow: 0 8px 20px rgba(255,107,157,0.3); }
         
         .menu-items { padding: 20px 16px 40px; }
-        
         .item-card { 
-            background: var(--card); 
-            border-radius: 18px; 
-            padding: 12px; 
-            margin-bottom: 14px; 
-            display: flex; 
-            gap: 14px; 
+            background: var(--card); border-radius: 18px; padding: 12px; 
+            margin-bottom: 14px; display: flex; gap: 14px; 
             box-shadow: 0 4px 15px rgba(0,0,0,0.08); 
         }
-        
         .item-img { width: 85px; height: 85px; border-radius: 14px; object-fit: cover; }
         .price { color: #e63946; font-weight: 800; font-size: 16px; margin-top: 10px; }
         
         /* Modal */
         .modal {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.7);
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.75);
             display: none;
             align-items: center;
             justify-content: center;
@@ -122,27 +184,36 @@
             gap: 12px;
             padding: 14px 0;
             border-bottom: 1px solid #ddd;
+            cursor: pointer;
         }
         [data-theme="dark"] .info-item { border-color: #444; }
         
-        .share-btn {
+        .share-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
             margin-top: 20px;
-            width: 100%;
-            padding: 14px;
-            background: #4ade80;
-            color: black;
-            border: none;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 16px;
         }
+        
+        .share-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 12px 8px;
+            background: #f1f5f9;
+            border-radius: 12px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        [data-theme="dark"] .share-btn { background: #374151; }
     </style>
 </head>
 <body>
     <!-- Top Bar -->
     <div class="topbar">
         <div style="display:flex; align-items:center; gap:12px;">
-            <div onclick="toggleTheme()" class="theme-toggle" id="themeIcon" style="font-size:22px; cursor:pointer;">🌙</div>
+            <div onclick="toggleTheme()" style="font-size:22px; cursor:pointer;" id="themeIcon">🌙</div>
             <div class="logo">مایرا</div>
         </div>
         <input type="text" id="searchInput" class="search-bar" placeholder="جستجو در منو...">
@@ -164,7 +235,7 @@
             <h2 style="margin-bottom: 20px; text-align:center;">اطلاعات مایرا</h2>
             
             <div class="info-item" onclick="callPhone()">
-                <i class="fas fa-phone" style="color:#22c55e; width:24px;"></i>
+                <i class="fas fa-phone" style="color:#22c55e; width:28px;"></i>
                 <div>
                     <div style="font-weight:600;">تماس با ما</div>
                     <div style="color:#22c55e;">۰۲۱-۲۲۳۳۴۴۵۵</div>
@@ -172,7 +243,7 @@
             </div>
             
             <div class="info-item" onclick="openMap()">
-                <i class="fas fa-map-marker-alt" style="color:#ef4444; width:24px;"></i>
+                <i class="fas fa-map-marker-alt" style="color:#ef4444; width:28px;"></i>
                 <div>
                     <div style="font-weight:600;">آدرس</div>
                     <div>بلوار اندرزگو، پلاک ۱۲</div>
@@ -180,18 +251,36 @@
             </div>
             
             <div class="info-item">
-                <i class="fas fa-clock" style="color:#eab308; width:24px;"></i>
+                <i class="fas fa-clock" style="color:#eab308; width:28px;"></i>
                 <div>
                     <div style="font-weight:600;">ساعت کاری</div>
                     <div>هر روز ۸ صبح تا ۱۱ شب</div>
                 </div>
             </div>
 
-            <button onclick="shareMenu()" class="share-btn">
-                <i class="fas fa-share"></i> اشتراک‌گذاری منو
-            </button>
+            <div style="margin-top: 24px;">
+                <h3 style="margin-bottom: 12px; text-align:center;">اشتراک‌گذاری منو</h3>
+                <div class="share-options">
+                    <div class="share-btn" onclick="shareTo('whatsapp')">
+                        <i class="fab fa-whatsapp" style="font-size:28px;color:#25D366;"></i>
+                        <span>واتساپ</span>
+                    </div>
+                    <div class="share-btn" onclick="shareTo('telegram')">
+                        <i class="fab fa-telegram" style="font-size:28px;color:#229ED9;"></i>
+                        <span>تلگرام</span>
+                    </div>
+                    <div class="share-btn" onclick="shareTo('instagram')">
+                        <i class="fab fa-instagram" style="font-size:28px;color:#E1306C;"></i>
+                        <span>اینستاگرام</span>
+                    </div>
+                    <div class="share-btn" onclick="shareTo('copy')">
+                        <i class="fas fa-link" style="font-size:28px;"></i>
+                        <span>کپی لینک</span>
+                    </div>
+                </div>
+            </div>
 
-            <button onclick="closeModal()" style="margin-top:12px; width:100%; padding:12px; background:#64748b; color:white; border:none; border-radius:12px;">
+            <button onclick="closeModal()" style="margin-top:20px; width:100%; padding:14px; background:#64748b; color:white; border:none; border-radius:12px; font-weight:600;">
                 بستن
             </button>
         </div>
@@ -229,22 +318,30 @@
             window.open("https://maps.google.com/maps?q=بلوار+اندرزگو+پلاک+۱۲", "_blank");
         }
 
-        function shareMenu() {
-            const text = "منوی کافه مایرا\n\nبرای دیدن منو کامل اینجا کلیک کنید:";
-            if (navigator.share) {
-                navigator.share({
-                    title: 'منوی مایرا',
-                    text: text,
-                    url: window.location.href
-                });
-            } else {
-                alert("لینک منو کپی شد:\n" + window.location.href);
-                navigator.clipboard.writeText(window.location.href);
+        function shareTo(platform) {
+            const url = window.location.href;
+            const text = "منوی کافه مایرا رو ببین! 🍩";
+
+            switch(platform) {
+                case 'whatsapp':
+                    window.open(`https://wa.me/?text=${encodeURIComponent(text + "\n" + url)}`, '_blank');
+                    break;
+                case 'telegram':
+                    window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank');
+                    break;
+                case 'instagram':
+                    alert("لینک کپی شد. می‌تونی در اینستاگرام استوری یا پست بذاری.");
+                    navigator.clipboard.writeText(url);
+                    break;
+                case 'copy':
+                    navigator.clipboard.writeText(url).then(() => {
+                        alert("لینک منو کپی شد ✓");
+                    });
+                    break;
             }
-            closeModal();
         }
 
-        // بقیه کد (دسته‌بندی، جستجو و ...) بدون تغییر
+        // بقیه کد (دسته‌بندی، جستجو، لود منو)
         async function loadMenu() {
             try {
                 const res = await fetch('menu-data.json?t=' + Date.now());
@@ -287,21 +384,17 @@
         }
 
         function filterByCategory() {
-            const filtered = currentCategory 
-                ? menuData.filter(i => i.category === currentCategory) 
-                : menuData;
+            const filtered = currentCategory ? menuData.filter(i => i.category === currentCategory) : menuData;
             renderMenuItems(filtered);
         }
 
         function renderMenuItems(items) {
             let html = '';
             items.forEach(item => {
-                const priceHTML = (item.price && item.price !== "-") 
-                    ? `<div class="price">${item.price} تومان</div>` 
-                    : '';
+                const priceHTML = (item.price && item.price !== "-") ? `<div class="price">${item.price} تومان</div>` : '';
                 html += `
                     <div class="item-card">
-                        <img src="${item.image || 'https://via.placeholder.com/85'}" class="item-img" alt="${item.name}">
+                        <img src="$$   {item.image || 'https://via.placeholder.com/85'}" class="item-img" alt="   $${item.name}">
                         <div style="flex:1;">
                             <h4 style="font-size:15.5px;margin-bottom:6px;">${item.name}</h4>
                             <p style="font-size:13px;color:#888;">${item.category}</p>
@@ -314,15 +407,9 @@
 
         document.getElementById('searchInput').addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase().trim();
-            let filtered = currentCategory 
-                ? menuData.filter(i => i.category === currentCategory) 
-                : menuData;
-            
+            let filtered = currentCategory ? menuData.filter(i => i.category === currentCategory) : menuData;
             if (term) {
-                filtered = filtered.filter(i => 
-                    i.name.toLowerCase().includes(term) || 
-                    i.category.toLowerCase().includes(term)
-                );
+                filtered = filtered.filter(i => i.name.toLowerCase().includes(term) || i.category.toLowerCase().includes(term));
             }
             renderMenuItems(filtered);
         });
