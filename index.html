@@ -107,6 +107,7 @@
             color: #e63946; 
             font-weight: 800; 
             font-size: 16px; 
+            margin-top: 10px;
         }
         
         .empty { 
@@ -177,14 +178,19 @@
         function renderMenuItems(items) {
             let html = '';
             items.forEach(item => {
-                const priceText = item.price === "-" ? "تماس بگیرید" : `${item.price} تومان`;
+                // اگر قیمت "-" یا خالی بود، هیچی نمایش نده
+                let priceHTML = '';
+                if (item.price && item.price !== "-") {
+                    priceHTML = `<div class="price">${item.price} تومان</div>`;
+                }
+                
                 html += `
                     <div class="item-card">
                         <img src="${item.image || 'https://via.placeholder.com/85'}" class="item-img" alt="${item.name}">
                         <div style="flex:1;">
                             <h4 style="font-size:15.5px; margin-bottom:6px;">${item.name}</h4>
                             <p style="font-size:13px; color:#666;">${item.category}</p>
-                            <div class="price" style="margin-top:10px;">${priceText}</div>
+                            ${priceHTML}
                         </div>
                     </div>`;
             });
