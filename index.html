@@ -81,7 +81,7 @@
         
         .main-donut {
             text-align: center;
-            margin: 20px 0;
+            margin: 20px 0 10px;
         }
         
         .donut-circle {
@@ -100,7 +100,7 @@
             display: flex;
             gap: 14px;
             padding: 0 16px;
-            margin: 10px 0 24px;
+            margin-bottom: 24px;
         }
         
         .offer-card {
@@ -108,24 +108,11 @@
             border-radius: 22px;
             padding: 16px;
             box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-        }
-        
-        .daily-suggestion {
-            margin: 0 16px 30px;
-            background: #2d2d2d;
-            color: white;
-            border-radius: 22px;
-            overflow: hidden;
-        }
-        
-        .daily-suggestion img {
-            width: 100%;
-            height: 190px;
-            object-fit: cover;
+            font-weight: 700;
         }
         
         .menu-items {
-            padding: 0 16px 30px;
+            padding: 0 16px 40px;
         }
         
         .item-card {
@@ -143,12 +130,11 @@
             height: 85px;
             border-radius: 14px;
             object-fit: cover;
-            background: #eee;
         }
         
         .item-info h4 {
-            margin: 0 0 6px;
-            font-size: 15px;
+            font-size: 15.5px;
+            margin-bottom: 6px;
         }
         
         .price {
@@ -157,11 +143,10 @@
             font-size: 16px;
         }
         
-        .footer {
+        .empty {
             text-align: center;
-            padding: 20px;
-            color: #777;
-            font-size: 13px;
+            padding: 60px 20px;
+            color: #999;
         }
     </style>
 </head>
@@ -179,31 +164,24 @@
     <!-- Categories -->
     <div class="cat-row" id="catRow"></div>
 
-    <!-- Main Donut -->
+    <!-- Featured Donut -->
     <div class="main-donut">
         <div class="donut-circle">🍩</div>
     </div>
 
-
-    <!-- Daily Suggestion -->
-    <div class="daily-suggestion">
-        <img src="https://picsum.photos/id/1080/400/220" alt="چیزکیک">
-        <div style="padding:16px;">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <div>
-                    <span style="color:#ffd93d;">⭐ ۴.۹</span>
-                    <span style="font-size:13px;">(۱۳۷ نظر)</span>
-                </div>
-                <div class="price">۱۴۶,۰۰۰ تومان</div>
-            </div>
-            <h3 style="margin:8px 0;">چیزکیک شاه توت</h3>
-            <button onclick="alert('جزئیات بیشتر')" style="background:#ff6b9d; color:white; border:none; padding:10px 24px; border-radius:30px; font-weight:700;">جزئیات بیشتر</button>
+    <!-- Offers -->
+    <div class="offers">
+        <div class="offer-card" style="background:linear-gradient(135deg,#a8dadc,#457b9d); color:white;">
+            ۵٪ تخفیف<br>صبحانه
+        </div>
+        <div class="offer-card" style="background:linear-gradient(135deg,#ffe5d9,#ff9f6c);">
+            ۲۰٪ تخفیف<br>پیش غذا
         </div>
     </div>
 
-    <!-- Menu Items -->
+    <!-- All Items -->
     <div class="menu-items">
-        <h3 style="margin:0 0 16px 16px; font-size:17px;">تمام آیتم‌ها</h3>
+        <h3 style="margin-bottom: 16px; padding-right: 8px; font-size: 17px;">منوی کامل</h3>
         <div id="menuContainer"></div>
     </div>
 
@@ -212,25 +190,38 @@
 
         async function loadMenu() {
             try {
-                const res = await fetch('menu-data.json');
-                menuData = await res.json();
+                const response = await fetch('menu-data.json');
+                menuData = await response.json();
+                
                 renderCategories();
-                renderAllItems();
-            } catch(e) {
-                console.error("خطا در لود منو", e);
-                document.getElementById('menuContainer').innerHTML = "<p style='text-align:center; padding:40px; color:#999;'>خطا در لود اطلاعات</p>";
+                renderMenuItems(menuData);
+            } catch (error) {
+                console.error(error);
+                document.getElementById('menuContainer').innerHTML = `
+                    <div class="empty">خطا در بارگذاری منو.<br>لطفاً صفحه را رفرش کنید.</div>`;
             }
         }
 
+        function getCategoryEmoji(category) {
+            if (category.includes("قهوه") || category.includes("چای")) return "☕";
+            if (category.includes("سرد")) return "🥤";
+            if (category.includes("پیتزا")) return "🍕";
+            if (category.includes("صبحانه")) return "🍳";
+            if (category.includes("دسر") || category.includes("کیک")) return "🍰";
+            return "🍔";
+        }
+
         function renderCategories() {
-            const cats = [...new Set(menuData.map(item => item.category))];
+            const categories = [...new Set(menuData.map(item => item.category))];
             let html = '';
             
-            cats.forEach((cat, index) => {
-                const emoji = getEmoji(cat);
+            categories.forEach((cat, i) => {
+                const isActive = i === 1; // دومین دسته فعال باشد
                 html += `
-                    <div class="cat-item ${index===2 ? 'active' : ''}">
-                        <div class="cat-circle" style="background: ${index===2 ? 'linear-gradient(145deg, #ff9f1c, #ff6b9d)' : '#ddd'};">${emoji}</div>
+                    <div class="cat-item ${isActive ? 'active' : ''}">
+                        <div class="cat-circle" style="background: ${isActive ? 'linear-gradient(145deg, #ff9f1c, #ff6b9d)' : '#e0d4c0'}">
+                            ${getCategoryEmoji(cat)}
+                        </div>
                         <div style="font-size:12px; font-weight:600;">${cat}</div>
                     </div>`;
             });
@@ -238,46 +229,45 @@
             document.getElementById('catRow').innerHTML = html;
         }
 
-        function getEmoji(cat) {
-            if (cat.includes('قهوه') || cat.includes('چای')) return '☕';
-            if (cat.includes('سرد')) return '🥤';
-            if (cat.includes('پیتزا')) return '🍕';
-            if (cat.includes('دسر') || cat.includes('کیک')) return '🍰';
-            return '🍔';
-        }
-
-        function renderAllItems(filtered = menuData) {
+        function renderMenuItems(items) {
             let html = '';
-            filtered.forEach(item => {
-                const price = item.price !== '-' ? `${item.price} تومان` : 'تماس بگیرید';
-                html += `
-                    <div class="item-card">
-                        <img src="${item.image}" class="item-img" alt="${item.name}">
-                        <div class="item-info" style="flex:1;">
-                            <h4>${item.name}</h4>
-                            <p style="font-size:13px; color:#666; margin:4px 0;">${item.desc || item.category}</p>
-                            <div style="color:#e63946; font-weight:700; margin-top:8px;">${price}</div>
-                        </div>
-                    </div>`;
-            });
+            
+            if (items.length === 0) {
+                html = `<div class="empty">هیچ محصولی یافت نشد</div>`;
+            } else {
+                items.forEach(item => {
+                    const priceText = item.price === "-" ? "تماس بگیرید" : `${item.price} تومان`;
+                    html += `
+                        <div class="item-card">
+                            <img src="${item.image || 'https://via.placeholder.com/85'}" class="item-img" alt="${item.name}">
+                            <div class="item-info" style="flex:1;">
+                                <h4>${item.name}</h4>
+                                <p style="font-size:13px; color:#666;">${item.category}</p>
+                                <div class="price" style="margin-top:8px;">${priceText}</div>
+                            </div>
+                        </div>`;
+                });
+            }
+            
             document.getElementById('menuContainer').innerHTML = html;
         }
 
-        // Search
+        // Search functionality
         document.getElementById('searchInput').addEventListener('input', (e) => {
-            const term = e.target.value.trim();
-            if (!term) {
-                renderAllItems();
+            const searchTerm = e.target.value.trim();
+            if (!searchTerm) {
+                renderMenuItems(menuData);
                 return;
             }
+            
             const filtered = menuData.filter(item => 
-                item.name.includes(term) || 
-                (item.desc && item.desc.includes(term))
+                item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                item.category.toLowerCase().includes(searchTerm.toLowerCase())
             );
-            renderAllItems(filtered);
+            renderMenuItems(filtered);
         });
 
-        // Load data
+        // Initialize
         window.onload = loadMenu;
     </script>
 </body>
