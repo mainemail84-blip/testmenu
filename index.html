@@ -75,6 +75,7 @@
             font-size: 28px; 
             margin-bottom: 6px; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+            transition: all 0.2s;
         }
         
         .cat-circle.active { 
@@ -139,13 +140,14 @@
 
     <script>
         let menuData = [];
+        let currentCategory = null;
 
         async function loadMenu() {
             try {
                 const res = await fetch('menu-data.json?t=' + Date.now());
                 menuData = await res.json();
                 renderCategories();
-                renderMenuItems(menuData);
+                renderMenuItems(menuData); // نمایش همه در ابتدا
             } catch(e) {
                 document.getElementById('menuContainer').innerHTML = `
                     <div class="empty">خطا در بارگذاری منو.<br>لطفاً صفحه را رفرش کنید.</div>`;
@@ -161,24 +163,42 @@
             });
 
             let html = '';
-            Object.keys(cats).forEach((cat, i) => {
+            Object.keys(cats).forEach(cat => {
                 const emoji = cats[cat];
-                const active = i === 0 ? 'active' : '';
+                const isActive = currentCategory === cat;
                 html += `
-                    <div class="cat-item ${active}">
-                        <div class="cat-circle" style="background: ${active ? 'linear-gradient(145deg, #ff9f1c, #ff6b9d)' : '#e0d4c0'}">
+                    <div class="cat-item" data-category="${cat}">
+                        <div class="cat-circle ${isActive ? 'active' : ''}" 
+                             style="background: ${isActive ? 'linear-gradient(145deg, #ff9f1c, #ff6b9d)' : '#e0d4c0'}">
                             ${emoji}
                         </div>
                         <div style="font-size:12px; font-weight:600;">${cat}</div>
                     </div>`;
             });
             document.getElementById('catRow').innerHTML = html;
+
+            // Add click listeners
+            document.querySelectorAll('.cat-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    currentCategory = item.dataset.category;
+                    renderCategories(); // Update active state
+                    filterByCategory();
+                });
+            });
+        }
+
+        function filterByCategory() {
+            if (!currentCategory) {
+                renderMenuItems(menuData);
+            } else {
+                const filtered = menuData.filter(item => item.category === currentCategory);
+                renderMenuItems(filtered);
+            }
         }
 
         function renderMenuItems(items) {
             let html = '';
             items.forEach(item => {
-                // اگر قیمت "-" یا خالی بود، هیچی نمایش نده
                 let priceHTML = '';
                 if (item.price && item.price !== "-") {
                     priceHTML = `<div class="price">${item.price} تومان</div>`;
@@ -196,18 +216,28 @@
             });
             
             document.getElementById('menuContainer').innerHTML = html || `
-                <div class="empty">هیچ محصولی یافت نشد</div>`;
+                <div class="empty">هیچ محصولی در این دسته یافت نشد</div>`;
         }
 
-        // Search
+        // Search (works with current category)
         document.getElementById('searchInput').addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase().trim();
-            const filtered = term 
-                ? menuData.filter(item => 
+            
+            let filtered = menuData;
+            
+            // Filter by category if selected
+            if (currentCategory) {
+                filtered = filtered.filter(item => item.category === currentCategory);
+            }
+            
+            // Search term
+            if (term) {
+                filtered = filtered.filter(item => 
                     item.name.toLowerCase().includes(term) || 
                     item.category.toLowerCase().includes(term)
-                  )
-                : menuData;
+                );
+            }
+            
             renderMenuItems(filtered);
         });
 
