@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پنل مدیریت - آب و آتش</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body class="bg-zinc-950 text-white">
+  <div class="max-w-2xl mx-auto p-6">
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="text-3xl font-bold">پنل مدیریت</h1>
+      <a href="index.html" class="text-amber-400 hover:underline">← منوی مشتری</a>
+    </div>
+
+    <div class="bg-zinc-900 rounded-3xl p-6 mb-8">
+      <label class="block mb-2">GitHub Token</label>
+      <input type="password" id="githubToken" placeholder="ghp_..." class="w-full bg-zinc-800 p-4 rounded-2xl">
+      <p class="text-xs text-zinc-500 mt-2">⚠️ این توکن فقط در مرورگر شما نگه‌داری می‌شود و به هیچ سروری ارسال نمی‌شود، اما هرکسی که این صفحه را باز کند و توکن را وارد کند می‌تواند منو را تغییر دهد. لینک این صفحه را عمومی نکنید.</p>
+    </div>
+
+    <!-- فرم آیتم -->
+    <div class="bg-zinc-900 rounded-3xl p-6 mb-10">
+      <h2 class="text-xl mb-6">افزودن / ویرایش آیتم</h2>
+      <form id="itemForm">
+        <input type="hidden" id="editId">
+        <input id="name" placeholder="نام آیتم" class="w-full bg-zinc-800 p-4 rounded-2xl mb-4" required>
+        <div class="grid grid-cols-2 gap-4 mb-4">
+          <input id="price" placeholder="قیمت (تومان)" class="bg-zinc-800 p-4 rounded-2xl" required>
+          <input id="category" placeholder="دسته‌بندی (جدید یا موجود)" class="bg-zinc-800 p-4 rounded-2xl" required>
+        </div>
+        <input id="desc" placeholder="توضیح" class="w-full bg-zinc-800 p-4 rounded-2xl mb-4">
+
+        <div class="grid grid-cols-3 gap-4 mb-4">
+          <div>
+            <label class="block text-xs text-zinc-400 mb-1">امتیاز (۱ تا ۵)</label>
+            <input id="rating" type="number" step="0.1" min="1" max="5" placeholder="4.5" class="bg-zinc-800 p-4 rounded-2xl w-full">
+          </div>
+          <div>
+            <label class="block text-xs text-zinc-400 mb-1">درصد تخفیف</label>
+            <input id="discount" type="number" step="1" min="0" max="90" placeholder="0" class="bg-zinc-800 p-4 rounded-2xl w-full">
+          </div>
+          <div class="flex flex-col justify-end">
+            <label class="flex items-center gap-2 bg-zinc-800 p-4 rounded-2xl cursor-pointer h-full">
+              <input id="popular" type="checkbox" class="w-4 h-4">
+              <span class="text-sm">محبوب</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <label class="block text-sm mb-2">عکس آیتم</label>
+          <input type="file" id="imageFile" accept="image/*" class="block w-full text-sm text-zinc-300 file:mr-4 file:py-3 file:px-6 file:rounded-2xl file:bg-amber-600 file:text-white">
+          <div id="preview" class="hidden mt-4">
+            <img id="previewImg" class="max-h-52 rounded-3xl">
+          </div>
+        </div>
+        <button type="submit" class="w-full bg-green-600 py-4 rounded-3xl font-medium">ذخیره و آپلود</button>
+      </form>
+    </div>
+
+    <div id="status" class="text-center my-6"></div>
+
+    <!-- لیست آیتم‌ها -->
+    <h2 class="text-xl font-semibold mb-4">آیتم‌های فعلی</h2>
+    <div id="adminList" class="space-y-4"></div>
+  </div>
+
+  <script>
+    const OWNER = "mainemail84-blip";
+    const REPO = "aboatashmenu";
+    let menuItems = [];
+    let selectedFile = null;
+
+    document.getElementById('imageFile').addEventListener('change', function(e) {
+      selectedFile = e.target.files[0];
+      if (selectedFile) {
+        const reader = new FileReader();
+        reader.onload = function(ev) {
+          document.getElementById('previewImg').src = ev.target.result;
+          document.getElementById('preview').classList.remove('hidden');
+        };
+        reader.readAsDataURL(selectedFile);
+      }
+    });
+
+    document.getElementById('itemForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const token = document.getElementById('githubToken').value.trim();
+      if (!token) return alert("توکن را وارد کنید!");
+      const status = document.getElementById('status');
+      status.innerHTML = "در حال آپلود...";
+
+      let imagePath = null;
+      const editId = document.getElementById('editId').value;
+
+      if (selectedFile) {
+        const fileName = Date.now() + '-' + selectedFile.name.replace(/\s+/g, '-').toLowerCase();
+        imagePath = `images/${fileName}`;
+        const uploaded = await uploadImage(selectedFile, fileName, token);
+        if (!uploaded) {
+          status.innerHTML = `<span class="text-red-400">❌ خطا در آپلود عکس</span>`;
+          return;
+        }
+      }
+
+      try {
+        const res = await fetch(`menu-data.json?t=${Date.now()}`);
+        menuItems = await res.json();
+      } catch (e) {
+        menuItems = [];
+      }
+
+      const existing = editId ? menuItems.find(i => i.id == editId) : null;
+
+      const newItem = {
+        id: editId ? Number(editId) : Date.now(),
+        name: document.getElementById('name').value,
+        price: document.getElementById('price').value,
+        category: document.getElementById('category').value,
+        desc: document.getElementById('desc').value,
+        rating: document.getElementById('rating').value ? Number(document.getElementById('rating').value) : (existing?.rating || null),
+        discount: document.getElementById('discount').value ? Number(document.getElementById('discount').value) : 0,
+        popular: document.getElementById('popular').checked,
+        image: imagePath || (existing ? existing.image : null),
+        emoji: existing?.emoji || "☕"
+      };
+
+      if (editId) {
+        menuItems = menuItems.map(i => i.id == newItem.id ? newItem : i);
+      } else {
+        menuItems.push(newItem);
+      }
+
+      const saved = await saveMenuData(token);
+      if (saved) {
+        status.innerHTML = `<span class="text-green-400">✅ ذخیره شد</span>`;
+        e.target.reset();
+        selectedFile = null;
+        document.getElementById('preview').classList.add('hidden');
+        loadData();
+      } else {
+        status.innerHTML = `<span class="text-red-400">❌ خطا در ذخیره‌سازی (توکن یا دسترسی را بررسی کنید)</span>`;
+      }
+    });
+
+    async function uploadImage(file, fileName, token) {
+      const reader = new FileReader();
+      return new Promise((resolve) => {
+        reader.onload = async function(e) {
+          const base64 = e.target.result.split(',')[1];
+          try {
+            const res = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/images/${fileName}`, {
+              method: 'PUT',
+              headers: { Authorization: `token ${token}`, "Content-Type": "application/json" },
+              body: JSON.stringify({ message: `Add image`, content: base64 })
+            });
+            resolve(res.ok);
+          } catch (err) {
+            resolve(false);
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function saveMenuData(token) {
+      try {
+        const content = btoa(unescape(encodeURIComponent(JSON.stringify(menuItems, null, 2))));
+        let sha = null;
+        try {
+          const r = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/menu-data.json`, {
+            headers: { Authorization: `token ${token}` }
+          });
+          if (r.ok) sha = (await r.json()).sha;
+        } catch(e) {}
+
+        const putRes = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/menu-data.json`, {
+          method: 'PUT',
+          headers: { Authorization: `token ${token}`, "Content-Type": "application/json" },
+          body: JSON.stringify({ message: "Update menu", content, sha })
+        });
+        return putRes.ok;
+      } catch (err) {
+        console.error(err);
+        return false;
+      }
+    }
+
+    function loadData() {
+      fetch(`menu-data.json?t=${Date.now()}`)
+        .then(res => res.json())
+        .then(data => {
+          menuItems = data || [];
+          renderList();
+        })
+        .catch(() => {
+          menuItems = [];
+          renderList();
+        });
+    }
+
+    function renderList() {
+      const container = document.getElementById('adminList');
+      container.innerHTML = menuItems.map(item => `
+        <div class="bg-zinc-900 p-5 rounded-3xl flex gap-4">
+          <div class="w-24 h-24 rounded-2xl overflow-hidden bg-zinc-800 flex-shrink-0">
+            ${item.image ? `<img src="${item.image}" class="w-full h-full object-cover">` : `<div class="w-full h-full flex items-center justify-center text-6xl">${item.emoji || '☕'}</div>`}
+          </div>
+          <div class="flex-1">
+            <div class="font-bold">${item.name} ${item.popular ? '<span class="text-orange-400 text-xs">🔥 محبوب</span>' : ''}</div>
+            <div class="text-sm text-zinc-400">${item.desc || ''}</div>
+            <div class="text-amber-400">${Number(item.price).toLocaleString()} تومان ${item.discount ? `<span class="text-red-400 text-xs">(${item.discount}% تخفیف)</span>` : ''}</div>
+            <div class="text-xs text-zinc-500 mt-1">دسته: ${item.category} ${item.rating ? `· امتیاز: ${item.rating}` : ''}</div>
+          </div>
+          <div class="flex flex-col gap-2">
+            <button onclick="editItem(${item.id})" class="text-blue-400">ویرایش</button>
+            <button onclick="deleteItem(${item.id})" class="text-red-400">حذف</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function editItem(id) {
+      const item = menuItems.find(i => i.id === id);
+      if (item) {
+        document.getElementById('editId').value = item.id;
+        document.getElementById('name').value = item.name;
+        document.getElementById('price').value = item.price;
+        document.getElementById('category').value = item.category;
+        document.getElementById('desc').value = item.desc || '';
+        document.getElementById('rating').value = item.rating || '';
+        document.getElementById('discount').value = item.discount || '';
+        document.getElementById('popular').checked = !!item.popular;
+        window.scrollTo({top:0, behavior:'smooth'});
+      }
+    }
+
+    function deleteItem(id) {
+      if (confirm('این آیتم حذف شود؟')) {
+        const token = document.getElementById('githubToken').value.trim();
+        if (!token) { alert('برای حذف باید توکن را وارد کنید'); return; }
+        menuItems = menuItems.filter(i => i.id !== id);
+        renderList();
+        saveMenuData(token);
+      }
+    }
+
+    loadData();
+  </script>
+</body>
+</html>
