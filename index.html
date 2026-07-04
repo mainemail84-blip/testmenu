@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>مایرا</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -12,7 +12,6 @@
             --card: #ffffff;
             --text: #333;
             --accent: #4a2c1f;
-            --pink: #ff6b9d;
         }
         
         [data-theme="dark"] {
@@ -31,7 +30,6 @@
             max-width: 430px;
             margin: 0 auto;
             min-height: 100vh;
-            transition: background 0.3s;
         }
         
         .topbar {
@@ -57,7 +55,6 @@
             border: none; 
             outline: none; 
         }
-        
         [data-theme="dark"] .search-bar { background: #3a3a3a; color: white; }
         
         .cat-row { 
@@ -78,26 +75,14 @@
         }
         
         .cat-circle { 
-            width: 58px; 
-            height: 58px; 
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 28px; 
-            margin-bottom: 6px; 
+            width: 58px; height: 58px; border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 28px; margin-bottom: 6px; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
-            transition: all 0.2s;
         }
+        .cat-circle.active { transform: scale(1.15); box-shadow: 0 8px 20px rgba(255,107,157,0.3); }
         
-        .cat-circle.active { 
-            transform: scale(1.15); 
-            box-shadow: 0 8px 20px rgba(255,107,157,0.3); 
-        }
-        
-        .menu-items { 
-            padding: 20px 16px 40px; 
-        }
+        .menu-items { padding: 20px 16px 40px; }
         
         .item-card { 
             background: var(--card); 
@@ -109,32 +94,47 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.08); 
         }
         
-        .item-img { 
-            width: 85px; 
-            height: 85px; 
-            border-radius: 14px; 
-            object-fit: cover; 
+        .item-img { width: 85px; height: 85px; border-radius: 14px; object-fit: cover; }
+        .price { color: #e63946; font-weight: 800; font-size: 16px; margin-top: 10px; }
+        
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: var(--card);
+            color: var(--text);
+            width: 90%;
+            max-width: 380px;
+            border-radius: 20px;
+            padding: 24px;
         }
         
-        .price { 
-            color: #e63946; 
-            font-weight: 800; 
-            font-size: 16px; 
-            margin-top: 10px;
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 0;
+            border-bottom: 1px solid #ddd;
         }
+        [data-theme="dark"] .info-item { border-color: #444; }
         
-        .empty { 
-            text-align: center; 
-            padding: 60px 20px; 
-            color: #999; 
-        }
-        
-        .theme-toggle {
-            font-size: 20px;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 50%;
-            transition: all 0.3s;
+        .share-btn {
+            margin-top: 20px;
+            width: 100%;
+            padding: 14px;
+            background: #4ade80;
+            color: black;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 16px;
         }
     </style>
 </head>
@@ -142,11 +142,11 @@
     <!-- Top Bar -->
     <div class="topbar">
         <div style="display:flex; align-items:center; gap:12px;">
-            <div onclick="toggleTheme()" class="theme-toggle" id="themeIcon">🌙</div>
-            <div class="logo"></div>
+            <div onclick="toggleTheme()" class="theme-toggle" id="themeIcon" style="font-size:22px; cursor:pointer;">🌙</div>
+            <div class="logo">مایرا</div>
         </div>
         <input type="text" id="searchInput" class="search-bar" placeholder="جستجو در منو...">
-        <i class="fas fa-bars" style="font-size:22px;"></i>
+        <i onclick="showInfoModal()" class="fas fa-bars" style="font-size:24px; cursor:pointer;"></i>
     </div>
 
     <!-- Categories -->
@@ -156,6 +156,45 @@
     <div class="menu-items">
         <h3 style="margin-bottom: 16px; padding-right: 8px; font-size: 17px;">منوی کامل</h3>
         <div id="menuContainer"></div>
+    </div>
+
+    <!-- Info Modal -->
+    <div class="modal" id="infoModal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 20px; text-align:center;">اطلاعات مایرا</h2>
+            
+            <div class="info-item" onclick="callPhone()">
+                <i class="fas fa-phone" style="color:#22c55e; width:24px;"></i>
+                <div>
+                    <div style="font-weight:600;">تماس با ما</div>
+                    <div style="color:#22c55e;">۰۲۱-۲۲۳۳۴۴۵۵</div>
+                </div>
+            </div>
+            
+            <div class="info-item" onclick="openMap()">
+                <i class="fas fa-map-marker-alt" style="color:#ef4444; width:24px;"></i>
+                <div>
+                    <div style="font-weight:600;">آدرس</div>
+                    <div>بلوار اندرزگو، پلاک ۱۲</div>
+                </div>
+            </div>
+            
+            <div class="info-item">
+                <i class="fas fa-clock" style="color:#eab308; width:24px;"></i>
+                <div>
+                    <div style="font-weight:600;">ساعت کاری</div>
+                    <div>هر روز ۸ صبح تا ۱۱ شب</div>
+                </div>
+            </div>
+
+            <button onclick="shareMenu()" class="share-btn">
+                <i class="fas fa-share"></i> اشتراک‌گذاری منو
+            </button>
+
+            <button onclick="closeModal()" style="margin-top:12px; width:100%; padding:12px; background:#64748b; color:white; border:none; border-radius:12px;">
+                بستن
+            </button>
+        </div>
     </div>
 
     <script>
@@ -171,13 +210,41 @@
         }
 
         function toggleTheme() {
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            setTheme(newTheme);
+            setTheme(currentTheme === 'light' ? 'dark' : 'light');
         }
 
-        // Initialize theme
-        setTheme(currentTheme);
+        function showInfoModal() {
+            document.getElementById('infoModal').style.display = 'flex';
+        }
 
+        function closeModal() {
+            document.getElementById('infoModal').style.display = 'none';
+        }
+
+        function callPhone() {
+            window.location.href = "tel:02122334455";
+        }
+
+        function openMap() {
+            window.open("https://maps.google.com/maps?q=بلوار+اندرزگو+پلاک+۱۲", "_blank");
+        }
+
+        function shareMenu() {
+            const text = "منوی کافه مایرا\n\nبرای دیدن منو کامل اینجا کلیک کنید:";
+            if (navigator.share) {
+                navigator.share({
+                    title: 'منوی مایرا',
+                    text: text,
+                    url: window.location.href
+                });
+            } else {
+                alert("لینک منو کپی شد:\n" + window.location.href);
+                navigator.clipboard.writeText(window.location.href);
+            }
+            closeModal();
+        }
+
+        // بقیه کد (دسته‌بندی، جستجو و ...) بدون تغییر
         async function loadMenu() {
             try {
                 const res = await fetch('menu-data.json?t=' + Date.now());
@@ -185,17 +252,14 @@
                 renderCategories();
                 renderMenuItems(menuData);
             } catch(e) {
-                document.getElementById('menuContainer').innerHTML = `
-                    <div class="empty">خطا در بارگذاری منو.<br>لطفاً صفحه را رفرش کنید.</div>`;
+                document.getElementById('menuContainer').innerHTML = `<div style="text-align:center;padding:60px;color:#999;">خطا در بارگذاری منو</div>`;
             }
         }
 
         function renderCategories() {
             const cats = {};
             menuData.forEach(item => {
-                if (!cats[item.category]) {
-                    cats[item.category] = item.emoji || '🍽️';
-                }
+                if (!cats[item.category]) cats[item.category] = item.emoji || '🍽️';
             });
 
             let html = '';
@@ -213,9 +277,9 @@
             });
             document.getElementById('catRow').innerHTML = html;
 
-            document.querySelectorAll('.cat-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    currentCategory = item.dataset.category;
+            document.querySelectorAll('.cat-item').forEach(el => {
+                el.addEventListener('click', () => {
+                    currentCategory = el.dataset.category;
                     renderCategories();
                     filterByCategory();
                 });
@@ -223,58 +287,50 @@
         }
 
         function filterByCategory() {
-            if (!currentCategory) {
-                renderMenuItems(menuData);
-            } else {
-                const filtered = menuData.filter(item => item.category === currentCategory);
-                renderMenuItems(filtered);
-            }
+            const filtered = currentCategory 
+                ? menuData.filter(i => i.category === currentCategory) 
+                : menuData;
+            renderMenuItems(filtered);
         }
 
         function renderMenuItems(items) {
             let html = '';
             items.forEach(item => {
-                let priceHTML = '';
-                if (item.price && item.price !== "-") {
-                    priceHTML = `<div class="price">${item.price} تومان</div>`;
-                }
-                
+                const priceHTML = (item.price && item.price !== "-") 
+                    ? `<div class="price">${item.price} تومان</div>` 
+                    : '';
                 html += `
                     <div class="item-card">
                         <img src="${item.image || 'https://via.placeholder.com/85'}" class="item-img" alt="${item.name}">
                         <div style="flex:1;">
-                            <h4 style="font-size:15.5px; margin-bottom:6px;">${item.name}</h4>
-                            <p style="font-size:13px; color:#888;">${item.category}</p>
+                            <h4 style="font-size:15.5px;margin-bottom:6px;">${item.name}</h4>
+                            <p style="font-size:13px;color:#888;">${item.category}</p>
                             ${priceHTML}
                         </div>
                     </div>`;
             });
-            
-            document.getElementById('menuContainer').innerHTML = html || `
-                <div class="empty">هیچ محصولی یافت نشد</div>`;
+            document.getElementById('menuContainer').innerHTML = html || `<div style="text-align:center;padding:60px;color:#999;">هیچ محصولی یافت نشد</div>`;
         }
 
-        // Search
         document.getElementById('searchInput').addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase().trim();
-            let filtered = menuData;
-            
-            if (currentCategory) {
-                filtered = filtered.filter(item => item.category === currentCategory);
-            }
+            let filtered = currentCategory 
+                ? menuData.filter(i => i.category === currentCategory) 
+                : menuData;
             
             if (term) {
-                filtered = filtered.filter(item => 
-                    item.name.toLowerCase().includes(term) || 
-                    item.category.toLowerCase().includes(term)
+                filtered = filtered.filter(i => 
+                    i.name.toLowerCase().includes(term) || 
+                    i.category.toLowerCase().includes(term)
                 );
             }
-            
             renderMenuItems(filtered);
         });
 
-        // Load everything
-        window.onload = loadMenu;
+        window.onload = () => {
+            setTheme(currentTheme);
+            loadMenu();
+        };
     </script>
 </body>
 </html>
