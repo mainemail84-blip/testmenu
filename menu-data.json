@@ -21,7 +21,7 @@
     "discount": 100,
     "popular": false,
     "image": "images/1783183631538-images.jpeg",
-    "emoji": "☕"
+    "emoji": "🫖"
   },
   {
     "id": 1783183763201,
@@ -33,7 +33,7 @@
     "discount": 100,
     "popular": false,
     "image": "images/1783183760743-images1.jpeg",
-    "emoji": "☕"
+    "emoji": "🍹"
   },
   {
     "id": 1783183848611,
@@ -45,7 +45,7 @@
     "discount": 100,
     "popular": false,
     "image": "images/1783183846647-milkshake-shokolat.jpg",
-    "emoji": "☕"
+    "emoji": "🍨"
   },
   {
     "id": 1783183953637,
@@ -57,7 +57,7 @@
     "discount": 100,
     "popular": false,
     "image": "images/1783183951820-pittzamix.jpeg",
-    "emoji": "☕"
+    "emoji": "🍕"
   },
   {
     "id": 1783184126099,
@@ -69,7 +69,7 @@
     "discount": 100,
     "popular": false,
     "image": "images/1783184123871-sibvizheh.jpeg",
-    "emoji": "☕"
+    "emoji": "🍟"
   },
   {
     "id": 1783184220735,
@@ -81,7 +81,7 @@
     "discount": 100,
     "popular": false,
     "image": "images/1783184218198-padtaalferedo.jpeg",
-    "emoji": "☕"
+    "emoji": "🍝"
   },
   {
     "id": 1783184343808,
@@ -93,7 +93,7 @@
     "discount": 100,
     "popular": false,
     "image": "images/1783184341487-casear-salad.jpg",
-    "emoji": "☕"
+    "emoji": "🥗"
   },
   {
     "id": 1783184419173,
@@ -105,6 +105,6 @@
     "discount": 100,
     "popular": false,
     "image": "images/1783184417095-nimro.jpeg",
-    "emoji": "☕"
+    "emoji": "🍳"
   }
 ]
