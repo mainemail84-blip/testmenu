@@ -37,116 +37,82 @@
         }
         
         .logo { font-weight: 800; font-size: 22px; color: var(--accent); }
-        
-        .search-bar {
-            flex: 1;
-            margin: 0 12px;
-            background: #f1ede6;
-            border-radius: 30px;
-            padding: 10px 20px;
-            font-size: 14px;
-            border: none;
-            outline: none;
+        .search-bar { 
+            flex: 1; 
+            margin: 0 12px; 
+            background: #f1ede6; 
+            border-radius: 30px; 
+            padding: 10px 20px; 
+            font-size: 14px; 
+            border: none; 
+            outline: none; 
         }
         
-        .cat-row {
-            display: flex;
-            gap: 12px;
-            padding: 16px 12px;
-            overflow-x: auto;
-            background: white;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        .cat-row { 
+            display: flex; 
+            gap: 12px; 
+            padding: 16px 12px; 
+            overflow-x: auto; 
+            background: white; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
         }
         
-        .cat-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-width: 70px;
-            cursor: pointer;
+        .cat-item { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            min-width: 70px; 
+            cursor: pointer; 
         }
         
-        .cat-circle {
-            width: 58px; height: 58px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            margin-bottom: 6px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        .cat-circle { 
+            width: 58px; 
+            height: 58px; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 28px; 
+            margin-bottom: 6px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
         }
         
-        .cat-circle.active { transform: scale(1.15); box-shadow: 0 8px 20px rgba(255,107,157,0.3); }
-        
-        .main-donut {
-            text-align: center;
-            margin: 20px 0 10px;
+        .cat-circle.active { 
+            transform: scale(1.15); 
+            box-shadow: 0 8px 20px rgba(255,107,157,0.3); 
         }
         
-        .donut-circle {
-            width: 110px; height: 110px;
-            background: linear-gradient(145deg, #ff9f1c, #ff6b9d);
-            border-radius: 50%;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 52px;
-            box-shadow: 0 10px 30px rgba(255,107,157,0.4);
+        .menu-items { 
+            padding: 20px 16px 40px; 
         }
         
-        .offers {
-            display: flex;
-            gap: 14px;
-            padding: 0 16px;
-            margin-bottom: 24px;
+        .item-card { 
+            background: white; 
+            border-radius: 18px; 
+            padding: 12px; 
+            margin-bottom: 14px; 
+            display: flex; 
+            gap: 14px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06); 
         }
         
-        .offer-card {
-            flex: 1;
-            border-radius: 22px;
-            padding: 16px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-            font-weight: 700;
+        .item-img { 
+            width: 85px; 
+            height: 85px; 
+            border-radius: 14px; 
+            object-fit: cover; 
         }
         
-        .menu-items {
-            padding: 0 16px 40px;
+        .price { 
+            color: #e63946; 
+            font-weight: 800; 
+            font-size: 16px; 
         }
         
-        .item-card {
-            background: white;
-            border-radius: 18px;
-            padding: 12px;
-            margin-bottom: 14px;
-            display: flex;
-            gap: 14px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-        }
-        
-        .item-img {
-            width: 85px;
-            height: 85px;
-            border-radius: 14px;
-            object-fit: cover;
-        }
-        
-        .item-info h4 {
-            font-size: 15.5px;
-            margin-bottom: 6px;
-        }
-        
-        .price {
-            color: #e63946;
-            font-weight: 800;
-            font-size: 16px;
-        }
-        
-        .empty {
-            text-align: center;
-            padding: 60px 20px;
-            color: #999;
+        .empty { 
+            text-align: center; 
+            padding: 60px 20px; 
+            color: #999; 
         }
     </style>
 </head>
@@ -164,22 +130,7 @@
     <!-- Categories -->
     <div class="cat-row" id="catRow"></div>
 
-    <!-- Featured Donut -->
-    <div class="main-donut">
-        <div class="donut-circle">🍩</div>
-    </div>
-
-    <!-- Offers -->
-    <div class="offers">
-        <div class="offer-card" style="background:linear-gradient(135deg,#a8dadc,#457b9d); color:white;">
-            ۵٪ تخفیف<br>صبحانه
-        </div>
-        <div class="offer-card" style="background:linear-gradient(135deg,#ffe5d9,#ff9f6c);">
-            ۲۰٪ تخفیف<br>پیش غذا
-        </div>
-    </div>
-
-    <!-- All Items -->
+    <!-- Menu Items -->
     <div class="menu-items">
         <h3 style="margin-bottom: 16px; padding-right: 8px; font-size: 17px;">منوی کامل</h3>
         <div id="menuContainer"></div>
@@ -190,84 +141,71 @@
 
         async function loadMenu() {
             try {
-                const response = await fetch('menu-data.json');
-                menuData = await response.json();
-                
+                const res = await fetch('menu-data.json?t=' + Date.now());
+                menuData = await res.json();
                 renderCategories();
                 renderMenuItems(menuData);
-            } catch (error) {
-                console.error(error);
+            } catch(e) {
                 document.getElementById('menuContainer').innerHTML = `
                     <div class="empty">خطا در بارگذاری منو.<br>لطفاً صفحه را رفرش کنید.</div>`;
             }
         }
 
-        function getCategoryEmoji(category) {
-            if (category.includes("قهوه") || category.includes("چای")) return "☕";
-            if (category.includes("سرد")) return "🥤";
-            if (category.includes("پیتزا")) return "🍕";
-            if (category.includes("صبحانه")) return "🍳";
-            if (category.includes("دسر") || category.includes("کیک")) return "🍰";
-            return "🍔";
-        }
-
         function renderCategories() {
-            const categories = [...new Set(menuData.map(item => item.category))];
+            const cats = {};
+            menuData.forEach(item => {
+                if (!cats[item.category]) {
+                    cats[item.category] = item.emoji || '🍽️';
+                }
+            });
+
             let html = '';
-            
-            categories.forEach((cat, i) => {
-                const isActive = i === 1; // دومین دسته فعال باشد
+            Object.keys(cats).forEach((cat, i) => {
+                const emoji = cats[cat];
+                const active = i === 0 ? 'active' : '';
                 html += `
-                    <div class="cat-item ${isActive ? 'active' : ''}">
-                        <div class="cat-circle" style="background: ${isActive ? 'linear-gradient(145deg, #ff9f1c, #ff6b9d)' : '#e0d4c0'}">
-                            ${getCategoryEmoji(cat)}
+                    <div class="cat-item ${active}">
+                        <div class="cat-circle" style="background: ${active ? 'linear-gradient(145deg, #ff9f1c, #ff6b9d)' : '#e0d4c0'}">
+                            ${emoji}
                         </div>
                         <div style="font-size:12px; font-weight:600;">${cat}</div>
                     </div>`;
             });
-            
             document.getElementById('catRow').innerHTML = html;
         }
 
         function renderMenuItems(items) {
             let html = '';
+            items.forEach(item => {
+                const priceText = item.price === "-" ? "تماس بگیرید" : `${item.price} تومان`;
+                html += `
+                    <div class="item-card">
+                        <img src="${item.image || 'https://via.placeholder.com/85'}" class="item-img" alt="${item.name}">
+                        <div style="flex:1;">
+                            <h4 style="font-size:15.5px; margin-bottom:6px;">${item.name}</h4>
+                            <p style="font-size:13px; color:#666;">${item.category}</p>
+                            <div class="price" style="margin-top:10px;">${priceText}</div>
+                        </div>
+                    </div>`;
+            });
             
-            if (items.length === 0) {
-                html = `<div class="empty">هیچ محصولی یافت نشد</div>`;
-            } else {
-                items.forEach(item => {
-                    const priceText = item.price === "-" ? "تماس بگیرید" : `${item.price} تومان`;
-                    html += `
-                        <div class="item-card">
-                            <img src="${item.image || 'https://via.placeholder.com/85'}" class="item-img" alt="${item.name}">
-                            <div class="item-info" style="flex:1;">
-                                <h4>${item.name}</h4>
-                                <p style="font-size:13px; color:#666;">${item.category}</p>
-                                <div class="price" style="margin-top:8px;">${priceText}</div>
-                            </div>
-                        </div>`;
-                });
-            }
-            
-            document.getElementById('menuContainer').innerHTML = html;
+            document.getElementById('menuContainer').innerHTML = html || `
+                <div class="empty">هیچ محصولی یافت نشد</div>`;
         }
 
-        // Search functionality
+        // Search
         document.getElementById('searchInput').addEventListener('input', (e) => {
-            const searchTerm = e.target.value.trim();
-            if (!searchTerm) {
-                renderMenuItems(menuData);
-                return;
-            }
-            
-            const filtered = menuData.filter(item => 
-                item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                item.category.toLowerCase().includes(searchTerm.toLowerCase())
-            );
+            const term = e.target.value.toLowerCase().trim();
+            const filtered = term 
+                ? menuData.filter(item => 
+                    item.name.toLowerCase().includes(term) || 
+                    item.category.toLowerCase().includes(term)
+                  )
+                : menuData;
             renderMenuItems(filtered);
         });
 
-        // Initialize
+        // Load on start
         window.onload = loadMenu;
     </script>
 </body>
